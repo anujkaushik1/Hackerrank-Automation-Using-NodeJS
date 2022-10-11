@@ -6,6 +6,7 @@ const email = "gixig48949@inkmoto.com";
 const password = "anujk2000";
 
 let cpage;
+// button[type="submit"]
 
 browserOpen.then(function(browserObj){
     let browserOpenPromise = browserObj.newPage();
@@ -16,4 +17,12 @@ browserOpen.then(function(browserObj){
     let goToPromise = cpage.goto(loginLink); 
     return goToPromise;
 
+}).then(function(){
+    let emailPromise = cpage.type("input[type='text']", email, {delay: 50});
+    return emailPromise;
+    
+}).then(function(){
+    let passPromise = cpage.type("input[type='password']", password, {delay: 50});
+    return passPromise;
+    
 })
