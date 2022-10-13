@@ -125,6 +125,11 @@ function questionSolver(question, answer){
 
         }).then(function(){
             return cpage.click('button.hr-monaco-submit');
+
+        }).then(function(){
+            resolve();
+        }).catch(function(){
+            reject();    
         })
         
     })
