@@ -1,4 +1,6 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require('puppeteer');
+const answer = require('./answer');
+const ans = require('./answer');
 
 let browserOpen = puppeteer.launch({headless: false, defaultViewport: null, args: ['--start-maximized']});
 const loginLink = "https://www.hackerrank.com/auth/login";
@@ -58,7 +60,7 @@ browserOpen.then(function(browserObj){
 
 }).then(function(challengesArr){
     console.log(challengesArr.length);
-    let questionWillSolvePromise = questionSolver(challengesArr[0]);
+    let questionWillSolvePromise = questionSolver(challengesArr[0], ans[0]);
     return questionWillSolvePromise;
 
 })
@@ -78,7 +80,7 @@ function waitAndClick(selector, page){
     })
 }
 
-function questionSolver(question){
+function questionSolver(question, answer){
     return new Promise(function(resolve, reject){
         let questionClick = question.click();
         questionClick.then(function(){
@@ -91,7 +93,8 @@ function questionSolver(question){
         }).then(function(){
             return waitAndClick('textarea[id="input-1"]', cpage);
         }).then(function(){
-           
+            return cpage.type('textarea[id="input-1"]', answer); 
+
         })
     })
 }
