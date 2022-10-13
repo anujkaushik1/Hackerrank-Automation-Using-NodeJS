@@ -58,7 +58,7 @@ browserOpen.then(function(browserObj){
 
 }).then(function(challengesArr){
     console.log(challengesArr.length);
-    let questionWillSolvePromise = questionSolver(challengesArr[0], cpage);
+    let questionWillSolvePromise = questionSolver(challengesArr[0]);
     return questionWillSolvePromise;
 
 })
@@ -67,7 +67,7 @@ function waitAndClick(selector, page){
     return new Promise(function(resolve, reject){
         let waitForModelPromise = page.waitForSelector(selector);
         waitForModelPromise.then(function(){
-            let clickModel = page.click(selector);
+            let clickModel = page.click(selector, {delay : 50});
             return clickModel;
 
         }).then(function(){
@@ -78,12 +78,20 @@ function waitAndClick(selector, page){
     })
 }
 
-function questionSolver(question, page){
+function questionSolver(question){
     return new Promise(function(resolve, reject){
-        let questionClickPromise = question.click();
-        questionClickPromise.then(function(){
-            let goToEditorPromise = waitAndClick('.monaco-editor.no-user-select.vs"', page);
-            return goToEditorPromise;
+        let questionClick = question.click();
+        questionClick.then(function(){
+            let editorFocus = waitAndClick('.monaco-editor.no-user-select .vs', cpage);
+            return editorFocus;
+
+        }).then(function(){
+            return waitAndClick('.checkbox-input', cpage);
+
+        }).then(function(){
+            return waitAndClick('textarea[id="input-1"]', cpage);
+        }).then(function(){
+           
         })
     })
 }
