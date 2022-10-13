@@ -1,11 +1,12 @@
 const puppeteer = require('puppeteer');
+const { join } = require('./answer');
 const answer = require('./answer');
 const ans = require('./answer');
 
 let browserOpen = puppeteer.launch({headless: false, defaultViewport: null, args: ['--start-maximized']});
 const loginLink = "https://www.hackerrank.com/auth/login";
-const email = "gixig48949@inkmoto.com";
-const password = "anujk2000";
+const email = "xiloja@ema-sofia.eu";
+const password = "Anujk7171";
 
 let cpage;
 //div[data-automation="algorithms"]
@@ -47,7 +48,7 @@ browserOpen.then(function(browserObj){
     return clickedPromise;
 
 }).then(function(){
-    let clickOnAlgoPromise = waitAndClick(".topic-card a[data-attr1='algorithms']", cpage);
+    let clickOnAlgoPromise = waitAndClick(".topic-card a[data-attr1='algorithms']", cpage); // scroll down automatically hoga + wait krega jabh tk selector mil na jaaye
     return clickOnAlgoPromise;
       
 }).then(function(){
@@ -80,6 +81,13 @@ function waitAndClick(selector, page){
     })
 }
 
+function pressKeys(key){
+    // return new Promise(function(resolve, reject){
+        let keyIsPressed = cpage.keyboard.press(key, {delay : 100});  // press mtlb bs press kra => down mtlb press krke rkha hua hai
+        return keyIsPressed;
+    // })
+}
+
 function questionSolver(question, answer){
     return new Promise(function(resolve, reject){
         let questionClick = question.click();
@@ -92,9 +100,32 @@ function questionSolver(question, answer){
 
         }).then(function(){
             return waitAndClick('textarea[id="input-1"]', cpage);
+
         }).then(function(){
             return cpage.type('textarea[id="input-1"]', answer); 
+        }).then(function(){
+            let ctrlIsPressed = cpage.keyboard.down('Control'); // down mtlb hold kra hua hai
+            return ctrlIsPressed;
 
+        }).then(function(){
+            return pressKeys('A');
+
+        }).then(function(){
+            return pressKeys('X');
+            
+        }).then(function(){
+            let editorFocus = waitAndClick('.monaco-editor.no-user-select .vs', cpage);
+            return editorFocus;
+
+        }).then(function(){
+            return pressKeys('A');
+
+        }).then(function(){
+            return pressKeys('V');
+
+        }).then(function(){
+            return cpage.click('button.hr-monaco-submit');
         })
+        
     })
 }
