@@ -46,7 +46,11 @@ browserOpen.then(function(browserObj){
 
 }).then(function(){
     let clickOnAlgoPromise = waitAndClick(".topic-card a[data-attr1='algorithms']", cpage);
-    return clickOnAlgoPromise;  
+    return clickOnAlgoPromise;
+      
+}).then(function(){
+    let clickedWarmupPromise = waitAndClick("input[value='warmup']", cpage);
+    return clickedWarmupPromise;
 })
 
 function waitAndClick(selector, page){
