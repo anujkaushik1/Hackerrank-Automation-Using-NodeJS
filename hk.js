@@ -51,8 +51,18 @@ browserOpen.then(function(browserObj){
 }).then(function(){
     let clickedWarmupPromise = waitAndClick("input[value='warmup']", cpage);
     return clickedWarmupPromise;
-})
 
+}).then(function(){
+    let allChallengePromise = cpage.$$('.ui-btn.ui-btn-normal.primary-cta.ui-btn-line-primary.ui-btn-styled');
+    return allChallengePromise;
+
+}).then(function(challengesArr){
+    console.log(challengesArr.length);
+    let questionWillSolvePromise = questionSolver(challengesArr[0], cpage);
+    return questionWillSolvePromise;
+
+})
+// 
 function waitAndClick(selector, page){
     return new Promise(function(resolve, reject){
         let waitForModelPromise = page.waitForSelector(selector);
@@ -64,6 +74,16 @@ function waitAndClick(selector, page){
             resolve();
         }).catch(function(err){
             reject();
+        })
+    })
+}
+
+function questionSolver(question, page){
+    return new Promise(function(resolve, reject){
+        let questionClickPromise = question.click();
+        questionClickPromise.then(function(){
+            let goToEditorPromise = waitAndClick('.monaco-editor.no-user-select.vs"', page);
+            return goToEditorPromise;
         })
     })
 }
